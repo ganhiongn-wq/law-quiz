@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>憲行法題卡</title>
+<meta name="description" content="司法官・律師第一試 103–115 年憲法與行政法 695 題隨機練習">
+<meta name="theme-color" content="#1f4f7a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="憲行法題卡">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one answer-sheet column — toolbar, a single question card, result strip; wrong answers open a full explanation sheet */
+:root{
+  --bg:#eef1f4; --paper:#fbfcfd; --ink:#1b2430; --muted:#5d6a78; --line:#cdd5de;
+  --accent:#1f4f7a; --accent-soft:#dbe6f1; --ok:#1f7a4d; --ok-soft:#dcefe4;
+  --bad:#b23a2b; --bad-soft:#f6e1dd; --pencil:#2b2f36;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --paper:#1a2129; --ink:#e4e9ef; --muted:#97a4b2; --line:#2f3a46;
+  --accent:#7fb0dd; --accent-soft:#1f3347; --ok:#5cc28d; --ok-soft:#173327;
+  --bad:#ec8576; --bad-soft:#3a2120; --pencil:#d9dee5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --paper:#1a2129; --ink:#e4e9ef; --muted:#97a4b2; --line:#2f3a46;
+  --accent:#7fb0dd; --accent-soft:#1f3347; --ok:#5cc28d; --ok-soft:#173327;
+  --bad:#ec8576; --bad-soft:#3a2120; --pencil:#d9dee5; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+h1{font-family:var(--f-display);font-weight:900;font-size:1.5rem;margin:0;letter-spacing:.02em;text-wrap:balance}
+h1 small{display:block;font-family:var(--f-body);font-weight:500;font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+.score{display:flex;gap:14px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.score b{color:var(--ink);font-size:1.05rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tools label{font-size:.8rem;color:var(--muted)}
+select,.chk{font:inherit;font-size:.9rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 10px;min-width:0;max-width:100%}
+.chk{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:.78rem;color:var(--muted)}
+.src{font-family:var(--f-mono);background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:4px;letter-spacing:.03em}
+.tag{border:1px solid var(--line);padding:1px 8px;border-radius:999px}
+.multi{color:var(--bad);border-color:currentColor}
+.stem{font-family:var(--f-display);font-weight:500;font-size:1.12rem;line-height:1.85;margin:0}
+.opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer;transition:background .15s,border-color .15s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt:focus-visible,.btn:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt:disabled{cursor:default}
+.bub{flex:none;width:30px;height:20px;margin-top:3px;border:1.5px solid var(--muted);border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.opt .txt{min-width:0}
+.opt.sel .bub{background:var(--pencil);border-color:var(--pencil);color:var(--paper)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .bub{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .bub{background:var(--bad);border-color:var(--bad);color:var(--paper)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.btn{font:inherit;font-weight:700;font-size:.95rem;border-radius:8px;padding:9px 18px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.result{border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.result.ok{background:var(--ok-soft);color:var(--ok)}
+.result.ng{background:var(--bad-soft);color:var(--bad)}
+.result strong{font-size:1.05rem}
+.result span{color:var(--ink);font-size:.92rem}
+.hint{font-size:.8rem;color:var(--muted)}
+/* explanation sheet */
+.sheet{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--bad);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.sheet h2{font-family:var(--f-display);font-weight:900;font-size:1.3rem;margin:0;color:var(--bad)}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.cmp div{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.cmp dt{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
+.cmp dd{margin:0;font-family:var(--f-mono);font-size:1.2rem}
+.cmp .you dd{color:var(--bad)} .cmp .ans dd{color:var(--ok)}
+.qbox{border-left:3px solid var(--line);padding-left:12px;font-size:.95rem;color:var(--muted)}
+.qbox p{margin:0 0 6px;color:var(--ink);font-family:var(--f-display)}
+.qbox ol{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.qbox li.a{color:var(--ok);font-weight:700} .qbox li.y{color:var(--bad);text-decoration:line-through}
+.explain h3{font-size:.8rem;letter-spacing:.12em;color:var(--accent);margin:0 0 6px}
+.explain p{margin:0;font-size:1rem;line-height:1.9;max-width:65ch}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts-inline{display:flex;gap:6px;align-items:center}
+.swipe{display:none}
+@media (max-width:600px){
+  body{font-size:16px}
+  .wrap{padding-block:12px 120px;gap:12px}
+  header{flex-direction:column;align-items:stretch;gap:10px}
+  h1{font-size:1.3rem}
+  .score{justify-content:space-between;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+  .tools{display:grid;grid-template-columns:1fr auto;gap:8px}
+  .tools label[for="fUnit"]{display:none}
+  .tools select{grid-column:1/-1;width:100%;font-size:16px;padding:10px}
+  .chk{font-size:.9rem;padding:8px 10px}
+  .card,.sheet{padding:16px 14px;border-radius:12px}
+  .stem{font-size:1.06rem}
+  .opt{min-height:52px;padding:12px;align-items:center}
+  .bub{margin-top:0}
+  .row>.hint{flex-basis:100%}
+  .acts{position:fixed;left:0;right:0;bottom:0;z-index:10;flex-wrap:nowrap;background:var(--paper);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+  .acts .btn{flex:1;padding:14px 10px;font-size:1rem}
+  .cmp{grid-template-columns:1fr 1fr}
+  .cmp div:last-child{grid-column:1/-1}
+  .swipe{display:block;text-align:center;font-size:.75rem;color:var(--muted)}
+}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100%;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.wrap{padding-top:calc(20px + env(safe-area-inset-top,0px))}
+.banner{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:nowrap;line-height:1.5;background:var(--accent-soft);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.9rem}
+.banner b{color:var(--accent)}
+.banner>span:first-child{min-width:0}
+.banner .x{flex:none}
+.banner .x{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 16px;font-size:.9rem;display:flex;gap:12px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+.toast button{font:inherit;font-weight:700;background:none;border:0;color:var(--accent-soft);cursor:pointer;padding:0}
+@media (max-width:600px){.wrap{padding-top:calc(12px + env(safe-area-inset-top,0px))}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1><small>司法官・律師第一試｜103–115年</small>憲法與行政法題卡</h1>
+    <div class="score" aria-live="polite">
+      <span>已答 <b id="sDone">0</b></span>
+      <span>答對 <b id="sOk">0</b></span>
+      <span>正確率 <b id="sRate">—</b></span>
+    </div>
+  </header>
+
+  <div class="tools">
+    <label for="fUnit">出題範圍</label>
+    <select id="fUnit"></select>
+    <label class="chk" for="fWrong"><input type="checkbox" id="fWrong"> 只練錯題（<span id="wCnt">0</span>）</label>
+    <button class="btn ghost" id="reset" type="button">清除紀錄</button>
+  </div>
+
+  <div class="banner" id="iosTip" hidden><span>安裝成 App：點 Safari 下方的 <b>分享</b> 按鈕，選 <b>加入主畫面</b>。</span><button class="x" id="iosX" type="button" aria-label="關閉提示">關閉</button></div>
+  <div class="banner" id="installTip" hidden><span>可以把題卡安裝成手機 App，離線也能刷題。</span><span class="acts-inline"><button class="btn" id="installBtn" type="button">安裝 App</button> <button class="x" id="installX" type="button">稍後</button></span></div>
+
+  <section id="quiz" class="card" aria-live="polite"></section>
+  <section id="sheet" class="sheet" hidden></section>
+</div>
+<div class="toast" id="toast" hidden><span id="toastMsg"></span><button id="toastBtn" type="button"></button></div>
+
+<script src="questions.js"></script>
+<script>
+const UNITS=["憲法總論、基本原則與基本國策","基本權總論","人身自由與正當法律程序","表現自由","經濟社會權","其他基本權","中央政府體制","司法權與憲法訴訟","地方制度","行政法基本原理","行政組織與公務員法","行政命令","行政處分","行政契約、事實行為與公物","行政程序與資訊公開","行政罰","行政執行","訴願","行政訴訟","國家賠償與損失補償"];
+const L="ABCDE";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let stat=store.get("qz_stat",{done:0,ok:0});
+let wrong=new Set(store.get("qz_wrong",[]));
+let cur=null, picked=new Set(), answered=false, lastIdx=-1;
+
+// filter options
+(function(){
+  const f=$("fUnit");
+  const add=(v,t)=>{const o=document.createElement("option");o.value=v;o.textContent=t;f.appendChild(o)};
+  add("all","全部題目（"+DATA.length+"題）");
+  add("C","第一編　憲法");add("A","第二編　行政法");
+  UNITS.forEach((u,i)=>add(String(i),"　"+(i<9?"憲":"行")+"｜"+u+"（"+DATA.filter(d=>d[2]===i).length+"）"));
+  f.value=store.get("qz_unit","all");
+})();
+
+function pool(){
+  const v=$("fUnit").value, onlyW=$("fWrong").checked;
+  return DATA.map((d,i)=>i).filter(i=>{
+    const u=DATA[i][2];
+    if(v==="C"&&u>8)return false; if(v==="A"&&u<9)return false;
+    if(/^\d+$/.test(v)&&u!==+v)return false;
+    if(onlyW&&!wrong.has(i))return false;
+    return true});
+}
+function renderStat(){
+  $("sDone").textContent=stat.done;$("sOk").textContent=stat.ok;
+  $("sRate").textContent=stat.done?Math.round(stat.ok/stat.done*100)+"%":"—";
+  $("wCnt").textContent=wrong.size;
+}
+function next(){
+  $("sheet").hidden=true;$("quiz").hidden=false;
+  const p=pool();
+  if(!p.length){$("quiz").innerHTML='<div class="empty">這個範圍目前沒有題目。'+($("fWrong").checked?"錯題本是空的，先在一般模式作答累積錯題。":"")+'</div>';return}
+  let i;do{i=p[Math.floor(Math.random()*p.length)]}while(p.length>1&&i===lastIdx);
+  lastIdx=i;cur=i;picked=new Set();answered=false;draw();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function draw(){
+  const d=DATA[cur],multi=d[5].length===5;
+  $("quiz").innerHTML=`
+    <div class="meta"><span class="src">${d[0]}年 第${d[1]}題</span><span class="tag">${esc(UNITS[d[2]])}</span>${multi?'<span class="tag multi">複選｜至少二個正確</span>':""}</div>
+    <p class="stem">${esc(d[4])}</p>
+    <ul class="opts">${d[5].map((o,k)=>`<li><button type="button" class="opt" data-k="${L[k]}"><span class="bub">${L[k]}</span><span class="txt">${esc(o)}</span></button></li>`).join("")}</ul>
+    <div id="res"></div>
+    <div class="swipe" id="swipeHint" hidden>作答後向左滑動也可換下一題</div>
+    <div class="row">
+      <span class="hint">${multi?"點選所有正確選項後按「送出作答」":"點選一個選項即作答"}</span>
+      <span class="acts">
+        ${multi?'<button class="btn" id="submit" type="button" disabled>送出作答</button>':""}
+        <button class="btn ghost" id="skip" type="button">換一題</button>
+      </span>
+    </div>`;
+  $("quiz").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    if(answered)return;const k=b.dataset.k;
+    if(multi){picked.has(k)?picked.delete(k):picked.add(k);b.classList.toggle("sel");$("submit").disabled=picked.size<2}
+    else{picked=new Set([k]);b.classList.add("sel");grade()}
+  }));
+  if(multi)$("submit").addEventListener("click",grade);
+  $("skip").addEventListener("click",next);
+}
+function grade(){
+  answered=true;const d=DATA[cur];
+  const mine=[...picked].sort().join("");
+  const ok=d[6].includes(mine);
+  const right=new Set(d[6][0].split(""));
+  $("quiz").querySelectorAll(".opt").forEach(b=>{
+    b.disabled=true;const k=b.dataset.k;
+    if(right.has(k))b.classList.add("right");
+    else if(picked.has(k))b.classList.add("wrong");
+  });
+  stat.done++;if(ok){stat.ok++;wrong.delete(cur)}else wrong.add(cur);
+  store.set("qz_stat",stat);store.set("qz_wrong",[...wrong]);renderStat();
+  const ansTxt=fmtAns(d[6]);
+  $("res").innerHTML=ok
+    ?`<div class="result ok"><strong>答對了　正確答案 ${ansTxt}</strong><span>${d[6].length>1?"本題官方更正，以上答案均給分。":"繼續下一題，或展開解析複習考點。"}</span></div>`
+    :`<div class="result ng"><strong>答錯了　正確答案 ${ansTxt}</strong><span>你的作答：${mine.split("").map(x=>"("+x+")").join("")}</span></div>`;
+  const row=$("quiz").querySelector(".row");
+  row.innerHTML=`<span class="hint">考點：${esc(d[3])}</span><span class="acts">${ok?'<button class="btn ghost" id="see" type="button">看解析</button>':'<button class="btn ghost" id="see" type="button">看說明</button>'}<button class="btn" id="go" type="button">下一題</button></span>`;
+  $("go").addEventListener("click",next);
+  const sh=$("swipeHint");if(sh)sh.hidden=false;
+  $("see").addEventListener("click",()=>showSheet(mine,ok));
+  if(!ok)setTimeout(()=>showSheet(mine,false),700);
+}
+function fmtAns(a){return a.map(x=>x.split("").map(c=>"("+c+")").join("")).join(" 或 ")}
+function showSheet(mine,ok){
+  const d=DATA[cur],right=new Set(d[6][0].split("")),mineSet=new Set(mine.split(""));
+  const s=$("sheet");
+  s.style.borderTopColor=ok?"var(--ok)":"var(--bad)";
+  s.innerHTML=`
+    <div class="meta"><span class="src">${d[0]}年 第${d[1]}題</span><span class="tag">${esc(UNITS[d[2]])}</span></div>
+    <h2 style="color:${ok?"var(--ok)":"var(--bad)"}">${ok?"答題解析":"答錯了，看看為什麼"}</h2>
+    <dl class="cmp">
+      <div class="you"><dt>你的作答</dt><dd>${mine.split("").map(x=>"("+x+")").join("")}</dd></div>
+      <div class="ans"><dt>正確答案</dt><dd>${fmtAns(d[6])}</dd></div>
+      <div><dt>考點</dt><dd style="font-family:var(--f-body);font-size:.95rem">${esc(d[3])}</dd></div>
+    </dl>
+    <div class="qbox"><p>${esc(d[4])}</p><ol>${d[5].map((o,k)=>{const c=L[k];const cls=right.has(c)?"a":(mineSet.has(c)?"y":"");return `<li class="${cls}">(${c}) ${esc(o)}</li>`}).join("")}</ol></div>
+    <div class="explain"><h3>司法官解題密碼</h3><p>${esc(d[7])}</p></div>
+    <div class="row"><span class="hint">考點：${esc(d[3])}</span><span class="acts"><button class="btn ghost" id="back" type="button">回到題卡</button><button class="btn" id="go2" type="button">下一題</button></span></div>`;
+  $("quiz").hidden=true;s.hidden=false;
+  $("back").addEventListener("click",()=>{s.hidden=true;$("quiz").hidden=false});
+  $("go2").addEventListener("click",next);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("fUnit").addEventListener("change",()=>{store.set("qz_unit",$("fUnit").value);next()});
+$("fWrong").addEventListener("change",next);
+let armed=false;
+$("reset").addEventListener("click",e=>{
+  if(!armed){armed=true;e.target.textContent="再按一次確認清除";setTimeout(()=>{armed=false;e.target.textContent="清除紀錄"},3000);return}
+  armed=false;e.target.textContent="已清除";stat={done:0,ok:0};wrong=new Set();store.set("qz_stat",stat);store.set("qz_wrong",[]);renderStat();
+  setTimeout(()=>e.target.textContent="清除紀錄",1500);if($("fWrong").checked)next();
+});
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="SELECT"||e.target.tagName==="INPUT")return;
+  if(!$("quiz").hidden&&!answered&&cur!==null){const k=e.key.toUpperCase();const i=L.indexOf(k);
+    const btns=$("quiz").querySelectorAll(".opt");if(i>=0&&btns[i]){btns[i].click();return}
+    if(e.key==="Enter"&&$("submit")&&!$("submit").disabled){$("submit").click();return}}
+  if(e.key==="Enter"&&(answered)){next()}
+});
+let tx=null,ty=null;
+["quiz","sheet"].forEach(id=>{const el=$(id);
+  el.addEventListener("touchstart",e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY},{passive:true});
+  el.addEventListener("touchend",e=>{if(tx===null)return;const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=null;
+    if(answered&&dx<-70&&Math.abs(dy)<50)next();},{passive:true});});
+// ---- PWA：安裝提示、離線快取與更新 ----
+(function(){
+  const standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  const ua=navigator.userAgent;
+  const isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  const dismissed=store.get("qz_tip_off",false);
+  if(isIOS&&!standalone&&!dismissed){$("iosTip").hidden=false}
+  $("iosX").addEventListener("click",()=>{$("iosTip").hidden=true;store.set("qz_tip_off",true)});
+  let deferred=null;
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;if(!dismissed)$("installTip").hidden=false});
+  $("installBtn").addEventListener("click",async()=>{if(!deferred)return;deferred.prompt();await deferred.userChoice.catch(()=>{});deferred=null;$("installTip").hidden=true});
+  $("installX").addEventListener("click",()=>{$("installTip").hidden=true;store.set("qz_tip_off",true)});
+  window.addEventListener("appinstalled",()=>{$("installTip").hidden=true;toast("已安裝到主畫面")});
+  function toast(msg,btn,fn){$("toastMsg").textContent=msg;const b=$("toastBtn");b.hidden=!btn;b.textContent=btn||"";b.onclick=fn||null;$("toast").hidden=false;if(!btn)setTimeout(()=>$("toast").hidden=true,2500)}
+  if("serviceWorker" in navigator&&location.protocol!=="file:"){
+    navigator.serviceWorker.register("sw.js").then(reg=>{
+      const ask=w=>toast("題庫有新版本","立即更新",()=>{w.postMessage("skipWaiting")});
+      if(reg.waiting&&navigator.serviceWorker.controller)ask(reg.waiting);
+      reg.addEventListener("updatefound",()=>{const w=reg.installing;w&&w.addEventListener("statechange",()=>{
+        if(w.state==="installed"){navigator.serviceWorker.controller?ask(w):toast("已可離線使用")}})});
+    }).catch(()=>{});
+    let reloading=false;
+    navigator.serviceWorker.addEventListener("controllerchange",()=>{if(reloading)return;reloading=true;location.reload()});
+  }
+})();
+renderStat();next();
+</script>
+</body>
+</html>
